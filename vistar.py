@@ -17,8 +17,8 @@ class VistarSyncApp(QMainWindow):
         # self.setWindowFlags(PyQt5.QtCore.Qt.Window | PyQt5.QtCore.Qt.CustomizeWindowHint | PyQt5.QtCore.Qt.WindowTitleHint)  # Corrected the usage of QtCore
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowMinMaxButtonsHint)
 
-        self.endpoint_Api= "https:/api/v1/computers/osquery_log_data/"
-        self.interval_seconds = 60
+        self.endpoint_Api= "https://api.vistar.cloud/api/v1/computers/osquery_log_data/"
+        self.interval_seconds = 30
         self.last_sync_time = None
         self.sync_active = False
         self.create_UI()
@@ -27,10 +27,10 @@ class VistarSyncApp(QMainWindow):
         self.setStyleSheet("QMainWindow::title { background-color: black; color: white; border: 20px solid gray; font-size: 20px; }")
 
         self.setWindowTitle("Vistar MDM . . .")
-        self.setGeometry(1300, 700, 250, 0)
+        self.setGeometry(1200, 50, 250, 0)
 
         # Set the application icon
-        self.setWindowIcon(QIcon("C:/Users/habta/Documents/vistar/images/vistar.ico"))
+        self.setWindowIcon(QIcon("./images/vistar.ico"))
         # Create a QLabel for the image
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
@@ -39,12 +39,12 @@ class VistarSyncApp(QMainWindow):
         layout = QVBoxLayout()
 
         # Load toggle images
-        self.start_image = QPixmap("C:/Users/habta/Documents/vistar/images/toggle_off.png")
-        self.stop_image = QPixmap("C:/Users/habta/Documents/vistar/images/toggle_on.png")
+        self.start_image = QPixmap("./images/toggle_off.png")
+        self.stop_image = QPixmap("./images/toggle_on.png")
 
         # Create a QLabel for the image
         image_label = QLabel(self)
-        image_label.setPixmap(QPixmap("C:/Users/habta/Documents/vistar/images/vistar.ico"))  # Replace with your image path
+        image_label.setPixmap(QPixmap("./images/vistar.ico"))  # Replace with your image path
         image_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(image_label)
 
@@ -115,7 +115,7 @@ class VistarSyncApp(QMainWindow):
 
         if elapsed_time >= self.interval_seconds and self.sync_active:
             osquery_data = self.run_osquery_and_send_data()
-            slef.send_data_to_api(osquery_data)
+            self.send_data_to_api(osquery_data)
             self.last_sync_time = current_time
 
         if self.sync_active:
@@ -135,17 +135,18 @@ class VistarSyncApp(QMainWindow):
 
     def run_osquery_and_send_data(self):
         all_osquery_data = {}
-        for query,simplified_name in self.query_data.items():
+        for query, simplified_name in self.query_data.items():
             try:
-                osquery_output = subprocess.check_output(["C:/Program Files/osquery/osqueryi.exe", "--json", query], shell=True)
-                osquery_data = json.loads(osquery_output.decode())
+                osquery_output = subprocess.check_output(["/Applications/Vistar.app/Contents/MacOS/osqueryi", "--json", query], universal_newlines=True)
+                osquery_data = json.loads(osquery_output)
                 all_osquery_data[simplified_name] = osquery_data
             except subprocess.CalledProcessError as e:
-                logging.error(f"Error running osquery for query '{query}': {e}")
+                print(f"Error running osquery for query '{query}': {e}")
             except Exception as e:
-                logging.error(f"Error processing query '{query}': {e}")
+                print(f"Error processing query '{query}': {e}")
 
         return all_osquery_data
+
     def update_toggle_button_label(self):
         label = "Stop Sync." if self.sync_active else "Start Sync"
         self.toggle_button.setText(label)
