@@ -9,14 +9,12 @@ jobs:
   build:
     runs-on: windows-latest
 
-
     steps:
     - name: Clone the osquery-packaging repository
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
         path: osquery-packaging
-
 
     - name: set up python
       uses: actions/setup-python@v2
@@ -30,13 +28,11 @@ jobs:
         pip install pyinstaller
         pip install requests
         pip install pyqt5
-    
 
     - name: Create python script into app
       working-directory: osquery-packaging
       run: |
         pyinstaller --onefile vistar.py
-
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
@@ -47,7 +43,7 @@ jobs:
     - name: set up CMake
       run: |
         osquery_version="5.10.2"
-        cmake -DCMAKE_BUILD_TYPE = Release ^
+        cmake -DCMAKE_BUILD_TYPE=Release ^
             -DCPACK_GENERATOR=WIX ^
             -DOSQUERY_PACKAGE_VERSION=${{osquery_version}} ^
             -DOSQUERY_DATA_PATH=osquery-packaging/Windows ^
@@ -61,6 +57,3 @@ jobs:
       with:
         name: Vistar 1
         path: package_build/*.msi
-        
-
-        
