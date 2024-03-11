@@ -42,11 +42,12 @@ jobs:
 
     - name: set up CMake
       run: |
-        # echo "OSQUERY_VERSION=5.10.2" >> $GITHUB_ENV
-        cmake -DCMAKE_BUILD_TYPE=Release ^
-            -DOSQUERY_DATA_PATH=osquery-packaging/Windows ^
+        ls
+        # # echo "OSQUERY_VERSION=5.10.2" >> $GITHUB_ENV
+        # cmake -DCMAKE_BUILD_TYPE=Release ^
+        #     -DOSQUERY_DATA_PATH=osquery-packaging/Windows ^
           
-        cmake --build . --config Release --target package
+        # cmake --build . --config Release --target package
 
 
 
