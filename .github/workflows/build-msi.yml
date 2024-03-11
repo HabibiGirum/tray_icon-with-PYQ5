@@ -13,7 +13,6 @@ concurrency:
 #   SUBMODULE_CACHE_VERSION: 2
 jobs:
   build_windows:
-        needs: [Call_Selenium_For_Registration,Send_Data_To_Remote_Server] 
         runs-on: ${{ matrix.os }}
     
         strategy:
