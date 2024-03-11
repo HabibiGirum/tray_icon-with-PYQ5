@@ -1,0 +1,6 @@
+cmake -DCMAKE_BUILD_TYPE=Release ^
+              -DCPACK_GENERATOR=WIX ^
+              -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
+              -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGE_DATA }} ^
+              -DOSQUERY_BITNESS=${{ matrix.bitness }} ^
+              ${{ steps.build_paths.outputs.PACKAGING }}
