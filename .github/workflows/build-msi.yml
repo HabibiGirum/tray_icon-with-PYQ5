@@ -329,7 +329,7 @@ jobs:
     
         - name: Create the packages
           shell: cmd
-          working-directory: osquery-packaging
+          working-directory: ${{ steps.build_paths.outputs.PACKAGING }}
 
           run: |
             call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
