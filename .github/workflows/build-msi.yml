@@ -47,10 +47,10 @@ jobs:
             -DCPACK_GENERATOR=WIX ^
             -DOSQUERY_PACKAGE_VERSION=${{ env.OSQUERY_VERSION }} ^
             -DOSQUERY_DATA_PATH=osquery-packaging/Windows ^
-            -S osquery-packaging ^
-            -B package_build
-        cmake --build package_build ^
-          --target package
+          
+        cmake --build . ^
+            --config Release ^
+            --target package
 
 
     - name: upload artifact
