@@ -361,9 +361,7 @@ jobs:
 
             if %errorlevel% neq 0 exit /b %errorlevel%
 
-            cmake --build . ^
-              --config Release ^
-              --target package
+            cmake --build . --config Release --target package
 
             if %errorlevel% neq 0 exit /b %errorlevel%
 
