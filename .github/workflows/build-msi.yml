@@ -329,35 +329,44 @@ jobs:
     
         - name: Create the packages
           shell: cmd
-    
+          working-directory: osquery-packaging
+
           run: |
             call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
             @echo on
-    
+
+            echo "Contents of the current directory:"
+            dir
+
             cd ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
-    
+
+            echo "Contents of ${{ steps.build_paths.outputs.PACKAGE_BUILD }}:"
+            dir
+
             7z ^
               a windows_package_data.zip ^
               ${{ steps.build_paths.outputs.PACKAGE_DATA }}
-    
+
             if %errorlevel% neq 0 exit /b %errorlevel%
-    
+
             if ${{ matrix.bitness }}==arm64 (
-               echo Do not create other packages for arm64
-               exit 0
+              echo Do not create other packages for arm64
+              exit 0
             )
-            
+
             cmake -DCMAKE_BUILD_TYPE=Release -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGING }}\Windows
-              
-    
+
+            echo "Contents of the directory after running cmake:"
+            dir
+
             if %errorlevel% neq 0 exit /b %errorlevel%
-    
+
             cmake --build . ^
               --config Release ^
               --target package
-    
+
             if %errorlevel% neq 0 exit /b %errorlevel%
-    
+
             # cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
             #   -DCPACK_GENERATOR=NuGet ^
             #   -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
