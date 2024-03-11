@@ -12,7 +12,7 @@
 
 # elseif(OSQUERY_BITNESS STREQUAL "64")
 set(CPACK_WIX_SIZEOF_VOID_P "8")
-OSQUERY_DATA_PATH
+
 # else()
 #   message(FATAL_ERROR "The OSQUERY_BITNESS variable must be set to either 32 or 64 according to the build type")
 # endif()
