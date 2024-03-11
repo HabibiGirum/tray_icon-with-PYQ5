@@ -347,7 +347,7 @@ jobs:
                exit 0
             )
             
-            cmake -DCMAKE_BUILD_TYPE=Release -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGING }}/Windows
+            cmake -DCMAKE_BUILD_TYPE=Release -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGING }}\Windows
               
     
             if %errorlevel% neq 0 exit /b %errorlevel%
