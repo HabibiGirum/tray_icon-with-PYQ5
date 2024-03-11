@@ -42,15 +42,14 @@ jobs:
 
     - name: set up CMake
       run: |
-        echo "OSQUERY_VERSION=5.10.2" >> $env:GITHUB_ENV
-        cmake -DCMAKE_BUILD_TYPE=Release `
-            -DCPACK_GENERATOR=WIX `
-            -DOSQUERY_PACKAGE_VERSION=${env:OSQUERY_VERSION} `
-            -DOSQUERY_DATA_PATH=osquery-packaging/Windows `
-            
-        cmake --build . `
-            --config Release `
-            --target package
+        echo "OSQUERY_VERSION=5.10.2" >> $GITHUB_ENV
+        cmake -DCMAKE_BUILD_TYPE=Release ^
+            -DCPACK_GENERATOR=WIX ^
+            -DOSQUERY_PACKAGE_VERSION=${{ env.OSQUERY_VERSION }} ^
+            -DOSQUERY_DATA_PATH=osquery-packaging/Windows ^
+          
+        cmake --build . --config Release --target package
+
 
 
     - name: upload artifact
