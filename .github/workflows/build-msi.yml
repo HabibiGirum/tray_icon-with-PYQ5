@@ -14,7 +14,6 @@ concurrency:
 jobs:
   build_windows:
         runs-on: ${{ matrix.os }}
-    
         strategy:
           matrix:
             build_type: [Release]
@@ -291,22 +290,22 @@ jobs:
             restore-keys: |
               sccache_${{ matrix.os }}_${{ matrix.bitness }}_${{ matrix.build_type }}_${{ steps.determine_compiler_version.outputs.COMPILER_VERSION }}
     
-        - name: Build the project
-          shell: cmd
-          working-directory: ${{ steps.build_paths.outputs.BINARY }}
+        # - name: Build the project
+        #   shell: cmd
+        #   working-directory: ${{ steps.build_paths.outputs.BINARY }}
     
-          env:
-            SCCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
-            SCCACHE_CACHE_SIZE: "5G"
+        #   env:
+        #     SCCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
+        #     SCCACHE_CACHE_SIZE: "5G"
     
-          run: |
-            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
-            @echo on
+        #   run: |
+        #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
+        #     @echo on
     
-            cmake --build . -j 3
+        #     cmake --build . -j 3
     
-            if %errorlevel% neq 0 exit /b %errorlevel%
-            sccache.exe --stop-server
+        #     if %errorlevel% neq 0 exit /b %errorlevel%
+        #     sccache.exe --stop-server
     
         - name: Run the tests
           # arm64 tests can't be run on x64 machine
@@ -348,12 +347,8 @@ jobs:
                exit 0
             )
     
-            cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
-              -DCPACK_GENERATOR=WIX ^
-              -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
-              -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGE_DATA }} ^
-              -DOSQUERY_BITNESS=${{ matrix.bitness }} ^
-              ${{ steps.build_paths.outputs.PACKAGING }}
+            cmake -DCMAKE_BUILD_TYPE=Release -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGING }}/Windows
+              
     
             if %errorlevel% neq 0 exit /b %errorlevel%
     
