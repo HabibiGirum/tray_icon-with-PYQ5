@@ -317,15 +317,15 @@ jobs:
             @echo on
             ctest --build-nocmake -C Release -V
     
-        - name: Run the install target
-          working-directory: ${{ steps.build_paths.outputs.BINARY }}
+        # - name: Run the install target
+        #   working-directory: ${{ steps.build_paths.outputs.BINARY }}
     
-          env:
-            CCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
-            DESTDIR: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
+        #   env:
+        #     CCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
+        #     DESTDIR: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
     
-          run: |
-            cmake --build . --target install -j 3
+        #   run: |
+        #     cmake --build . --target install -j 3
     
         - name: Create the packages
           shell: cmd
@@ -346,7 +346,7 @@ jobs:
                echo Do not create other packages for arm64
                exit 0
             )
-    
+            
             cmake -DCMAKE_BUILD_TYPE=Release -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGING }}/Windows
               
     
