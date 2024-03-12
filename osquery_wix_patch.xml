@@ -1,0 +1,36 @@
+<CPackWiXPatch>
+    <CPackWiXFragment Id="CM_CP_vistar.vistar.exe">
+        <!-- CreateFolder element to set permissions for the installation folder -->
+        <CreateFolder>
+            <Permission User="[WIX_ACCOUNT_USERS]" Read="yes" ReadExtendedAttributes="yes" Traverse="yes"
+              ReadAttributes="yes" ReadPermission="yes" Synchronize="yes" GenericWrite="no" WriteAttributes="no"/>
+            <Permission User="[WIX_ACCOUNT_ADMINISTRATORS]" GenericAll="yes"/>
+            <Permission User="[WIX_ACCOUNT_LOCALSYSTEM]" GenericAll="yes"/>
+        </CreateFolder>
+
+        <!-- ServiceInstall element to install the service -->
+        <ServiceInstall Id='vistar'
+            Name='vistar'
+            Account='NT AUTHORITY\SYSTEM'
+            Arguments='--flagfile="[INSTALL_ROOT]vistar.flags"'
+            Start='auto'
+            Type='ownProcess'
+            Vital='yes'
+            ErrorControl='normal'/>
+
+        <!-- ServiceControl element to control the service -->
+        <ServiceControl Id='vistar'
+            Name='vistar'
+            Stop='both'
+            Start='install'
+            Remove='uninstall'
+            Wait='no'/>
+    </CPackWiXFragment>
+
+    <!-- Additional CPackWiXFragment elements to reference account properties -->
+    <CPackWiXFragment Id="#PRODUCT">
+        <PropertyRef Id="WIX_ACCOUNT_LOCALSYSTEM" />
+        <PropertyRef Id="WIX_ACCOUNT_USERS" />
+        <PropertyRef Id="WIX_ACCOUNT_ADMINISTRATORS" />
+    </CPackWiXFragment>
+</CPackWiXPatch>
