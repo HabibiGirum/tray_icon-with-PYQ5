@@ -8,6 +8,7 @@ concurrency:
   group: hosted-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 jobs:
+  
   build_windows:
         runs-on: ${{ matrix.os }}
     
@@ -16,8 +17,10 @@ jobs:
             build_type: [Release]
             bitness: [64, arm64]
             os: [windows-2019]
+        
     
         steps:
+        
         - name: Setup the build paths
           shell: powershell
           id: build_paths
@@ -46,6 +49,27 @@ jobs:
             echo "INSTALL=$base_dir\$rel_install_path" >> $env:GITHUB_OUTPUT
             echo "PACKAGING=$base_dir\$rel_packaging_path" >> $env:GITHUB_OUTPUT
             echo "PACKAGE_DATA=$base_dir\$rel_package_data_path" >> $env:GITHUB_OUTPUT
+        - name: install dependencies
+          run: |
+            pip3 install pyinstaller
+            pip3 install requests
+            pip3 install PyQt5
+            pip3 install packaging
+
+        - name: create vistar agent app
+          shell: bash
+          working-directory: ${{steps.build_paths.outputs.PACKAGING}}
+          run: |
+            pyinstaller --onefile Vistar.py
+            dir
+            
+
+        - name: upload artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: executable app with pyinstaller
+            path: osquery-packaging/Vistar.app
+
     
         - name: Setup the VC arch
           shell: powershell
