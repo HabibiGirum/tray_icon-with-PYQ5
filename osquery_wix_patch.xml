@@ -12,7 +12,6 @@
         <ServiceInstall Id='vistar'
             Name='vistar'
             Account='NT AUTHORITY\SYSTEM'
-            Arguments='--flagfile="[INSTALL_ROOT]vistar.flags"'
             Start='auto'
             Type='ownProcess'
             Vital='yes'
@@ -28,9 +27,9 @@
     </CPackWiXFragment>
 
     <!-- Additional CPackWiXFragment elements to reference account properties -->
-    <CPackWiXFragment Id="CM_CP_vistar.vistar.exe">
+    <!-- <CPackWiXFragment Id="CM_CP_vistar.vistar.exe">
         <PropertyRef Id="WIX_ACCOUNT_LOCALSYSTEM" />
         <PropertyRef Id="WIX_ACCOUNT_USERS" />
         <PropertyRef Id="WIX_ACCOUNT_ADMINISTRATORS" />
-    </CPackWiXFragment>
+    </CPackWiXFragment> -->
 </CPackWiXPatch>
