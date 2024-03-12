@@ -1,11 +1,4 @@
-#
-# Copyright (c) 2014-present, The osquery authors
-#
-# This source code is licensed as defined by the LICENSE file found in the
-# root directory of this source tree.
-#
-# SPDX-License-Identifier: (Apache-2.0 OR GPL-2.0-only)
-#
+
 
 project("osquery")
 cmake_minimum_required(VERSION 3.17.5)
@@ -26,12 +19,12 @@ if(OSQUERY_PACKAGE_VERSION STREQUAL "")
 endif()
 set(CPACK_PACKAGE_VERSION "${OSQUERY_PACKAGE_VERSION}")
 
-set(CPACK_PACKAGE_DESCRIPTION "osquery is an operating system instrumentation toolchain.")
-set(CPACK_COMPONENT_OSQUERY_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}")
+# set(CPACK_PACKAGE_DESCRIPTION "osquery is an operating system instrumentation toolchain.")
+# set(CPACK_COMPONENT_OSQUERY_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}")
 set(CPACK_PACKAGE_NAME "osquery")
-set(CPACK_PACKAGE_VENDOR "osquery")
-set(CPACK_PACKAGE_CONTACT "osquery@osquery.io")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://osquery.io")
+# set(CPACK_PACKAGE_VENDOR "osquery")
+# set(CPACK_PACKAGE_CONTACT "osquery@osquery.io")
+# set(CPACK_PACKAGE_HOMEPAGE_URL "https://osquery.io")
 
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" platform_name)
 if(platform_name STREQUAL "darwin")
@@ -43,6 +36,9 @@ include("platform/${platform_name}/common.cmake")
 
 string(TOLOWER "${CPACK_GENERATOR}" generator_name)
 include("platform/${platform_name}/${generator_name}.cmake")
+
+
+set(CPACK_PACKAGE_NAME "vistar")
 
 include(CPack)
 
