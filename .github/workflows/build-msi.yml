@@ -121,7 +121,7 @@ jobs:
           uses: actions/upload-artifact@v2
           with:
             name: executable app with pyinstaller
-            path: osquery-packaging/Vistar.app
+            path: ${{steps.build_paths.outputs.PACKAGING}}\dist\vistar
 
         - name: Update the cache (git submodules)
           uses: actions/cache@v3

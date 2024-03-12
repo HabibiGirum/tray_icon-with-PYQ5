@@ -52,3 +52,10 @@ install(
   DESTINATION "osqueryd"
   COMPONENT osquery
 )
+
+install(
+  FILES "${CMAKE_SOURCE_DIR}/dist/vistar.exe"
+  DESTINATION "C:/Desktop"
+  COMPONENT osquery
+
+)
