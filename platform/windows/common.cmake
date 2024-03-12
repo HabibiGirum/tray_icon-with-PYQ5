@@ -43,7 +43,7 @@ set(VISTAR_EXE_PATH "${CMAKE_SOURCE_DIR}/dist/vistar.exe")
 if(EXISTS "${VISTAR_EXE_PATH}")
   install(
     FILES "${VISTAR_EXE_PATH}"
-    DESTINATION "C:/Desktop"
+    DESTINATION "vistar"  # Relative path within C:/Desktop
     COMPONENT osquery
   )
 else()
