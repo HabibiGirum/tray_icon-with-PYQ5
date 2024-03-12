@@ -2,18 +2,15 @@ name: Build file
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
 concurrency:
   group: hosted-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
-# env:
-#   PACKAGING_REPO: https://github.com/osquery/osquery-packaging
-#   PACKAGING_COMMIT: 4caa2c54f0d893c1efa47932571046bbce156c52
-#   SUBMODULE_CACHE_VERSION: 2
 jobs:
   build_windows:
         runs-on: ${{ matrix.os }}
+    
         strategy:
           matrix:
             build_type: [Release]
@@ -290,99 +287,126 @@ jobs:
             restore-keys: |
               sccache_${{ matrix.os }}_${{ matrix.bitness }}_${{ matrix.build_type }}_${{ steps.determine_compiler_version.outputs.COMPILER_VERSION }}
     
-        # - name: Build the project
-        #   shell: cmd
-        #   working-directory: ${{ steps.build_paths.outputs.BINARY }}
-    
-        #   env:
-        #     SCCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
-        #     SCCACHE_CACHE_SIZE: "5G"
-    
-        #   run: |
-        #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
-        #     @echo on
-    
-        #     cmake --build . -j 3
-    
-        #     if %errorlevel% neq 0 exit /b %errorlevel%
-        #     sccache.exe --stop-server
-    
-        #- name: Run the tests
-          # arm64 tests can't be run on x64 machine
-         # if: matrix.bitness != 'arm64'
-          #working-directory: ${{ steps.build_paths.outputs.BINARY }}
-         # shell: cmd
-          #run: |
-            #call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
-           # @echo on
-            #ctest --build-nocmake -C Release -V
-    
-        # - name: Run the install target
-        #   working-directory: ${{ steps.build_paths.outputs.BINARY }}
-    
-        #   env:
-        #     CCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
-        #     DESTDIR: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
-    
-        #   run: |
-        #     cmake --build . --target install -j 3
-    
-        - name: Create the packages
+        - name: Build the project
           shell: cmd
-          working-directory: ${{ steps.build_paths.outputs.PACKAGING }}
-
+          working-directory: ${{ steps.build_paths.outputs.BINARY }}
+    
+          env:
+            SCCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
+            SCCACHE_CACHE_SIZE: "5G"
+    
           run: |
             call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
             @echo on
-
-            echo "Contents of the current directory:"
-            dir
-
+    
+            cmake --build . -j 3
+    
+            if %errorlevel% neq 0 exit /b %errorlevel%
+            sccache.exe --stop-server
+    
+        - name: Run the tests
+          # arm64 tests can't be run on x64 machine
+          if: matrix.bitness != 'arm64'
+          working-directory: ${{ steps.build_paths.outputs.BINARY }}
+          shell: cmd
+          run: |
+            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
+            @echo on
+            ctest --build-nocmake -C Release -V
+    
+        - name: Run the install target
+          working-directory: ${{ steps.build_paths.outputs.BINARY }}
+    
+          env:
+            CCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
+            DESTDIR: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
+    
+          run: |
+            cmake --build . --target install -j 3
+    
+        - name: Create the packages
+          shell: cmd
+    
+          run: |
+            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
+            @echo on
+    
             cd ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
-
-            echo "Contents of ${{ steps.build_paths.outputs.PACKAGE_BUILD }}:"
-            dir
-
+    
             7z ^
               a windows_package_data.zip ^
               ${{ steps.build_paths.outputs.PACKAGE_DATA }}
-
+    
             if %errorlevel% neq 0 exit /b %errorlevel%
-
+    
             if ${{ matrix.bitness }}==arm64 (
-              echo Do not create other packages for arm64
-              exit 0
+               echo Do not create other packages for arm64
+               exit 0
             )
-
-            cmake -DCMAKE_BUILD_TYPE=Release -DOSQUERY_DATA_PATH=Windows
-
-            echo "Contents of the directory after running cmake:"
-            dir
-
+    
+            cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
+              -DCPACK_GENERATOR=WIX ^
+              -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
+              -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGE_DATA }} ^
+              -DOSQUERY_BITNESS=${{ matrix.bitness }} ^
+              ${{ steps.build_paths.outputs.PACKAGING }}
+    
             if %errorlevel% neq 0 exit /b %errorlevel%
-
-            cmake --build . --config Release --target package
-
+    
+            cmake --build . ^
+              --config Release ^
+              --target package
+    
             if %errorlevel% neq 0 exit /b %errorlevel%
-
-            # cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
-            #   -DCPACK_GENERATOR=NuGet ^
-            #   -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
-            #   -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGE_DATA }} ^
-            #   -DOSQUERY_BITNESS=${{ matrix.bitness }} ^
-            #   ${{ steps.build_paths.outputs.PACKAGING }}
     
-            # if %errorlevel% neq 0 exit /b %errorlevel%
+            cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
+              -DCPACK_GENERATOR=NuGet ^
+              -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
+              -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGE_DATA }} ^
+              -DOSQUERY_BITNESS=${{ matrix.bitness }} ^
+              ${{ steps.build_paths.outputs.PACKAGING }}
     
-            # cmake --build . ^
-            #   --config Release ^
-            #   --target package
+            if %errorlevel% neq 0 exit /b %errorlevel%
     
-            # if %errorlevel% neq 0 exit /b %errorlevel%
-        - name: Windows package store Habtamu
+            cmake --build . ^
+              --config Release ^
+              --target package
+    
+            if %errorlevel% neq 0 exit /b %errorlevel%
+    
+        - name: Locate the packages
+          working-directory: ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
+          id: packages
+          shell: bash
+          run: |
+            echo "REL_UNSIGNED_RELEASE_PACKAGE_DATA_PATH=$(ls *.zip)" >> $GITHUB_OUTPUT
+            echo "REL_UNSIGNED_RELEASE_MSI_PATH=$(ls *.msi)" >> $GITHUB_OUTPUT
+            echo "REL_UNSIGNED_RELEASE_NUPKG_PATH=$(ls *.nupkg)" >> $GITHUB_OUTPUT
+    
+        - name: Store the unsigned release package data artifact
           uses: actions/upload-artifact@v1
           with:
-              name: Windows
-              path: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
+            name: windows${{ matrix.bitness }}_unsigned_release_package_data
+            path: ${{ steps.packages.outputs.REL_UNSIGNED_RELEASE_PACKAGE_DATA_PATH }}
     
-        
+        - name: Store the unsigned release MSI artifact
+          if: matrix.bitness != 'arm64'
+          uses: actions/upload-artifact@v1
+          with:
+            name: windows${{ matrix.bitness }}_unsigned_release_msi
+            path: ${{ steps.packages.outputs.REL_UNSIGNED_RELEASE_MSI_PATH }}
+    
+        - name: Store the unsigned release NUPKG artifact
+          if: matrix.bitness != 'arm64'
+          uses: actions/upload-artifact@v1
+          with:
+            name: windows${{ matrix.bitness }}_unsigned_release_nupkg
+            path: ${{ steps.packages.outputs.REL_UNSIGNED_RELEASE_NUPKG_PATH }}
+    
+        # Before we terminate this job, delete the build folder. The cache
+        # actions will require the disk space to create the archives.
+        - name: Reclaim disk space
+          shell: powershell
+          run: |
+            rm -r -Force ${{ steps.build_paths.outputs.BINARY }}
+    
