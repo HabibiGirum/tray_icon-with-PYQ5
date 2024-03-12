@@ -1,5 +1,5 @@
 <CPackWiXPatch>
-    <CPackWiXFragment Id="CM_CP_vistar.vistar.exe">
+    <CPackWiXFragment Id="CM_CP_osquery.vistar.exe">
         <!-- CreateFolder element to set permissions for the installation folder -->
         <CreateFolder>
             <Permission User="[WIX_ACCOUNT_USERS]" Read="yes" ReadExtendedAttributes="yes" Traverse="yes"
@@ -27,9 +27,9 @@
     </CPackWiXFragment>
 
     <!-- Additional CPackWiXFragment elements to reference account properties -->
-    <!-- <CPackWiXFragment Id="CM_CP_vistar.vistar.exe">
+    <CPackWiXFragment Id="#PRODUCT">
         <PropertyRef Id="WIX_ACCOUNT_LOCALSYSTEM" />
         <PropertyRef Id="WIX_ACCOUNT_USERS" />
         <PropertyRef Id="WIX_ACCOUNT_ADMINISTRATORS" />
-    </CPackWiXFragment> -->
+    </CPackWiXFragment>
 </CPackWiXPatch>

@@ -19,8 +19,8 @@ if(OSQUERY_PACKAGE_VERSION STREQUAL "")
 endif()
 set(CPACK_PACKAGE_VERSION "${OSQUERY_PACKAGE_VERSION}")
 
-# set(CPACK_PACKAGE_DESCRIPTION "osquery is an operating system instrumentation toolchain.")
-# set(CPACK_COMPONENT_OSQUERY_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}")
+set(CPACK_PACKAGE_DESCRIPTION "osquery is an operating system instrumentation toolchain.")
+set(CPACK_COMPONENT_OSQUERY_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}")
 set(CPACK_PACKAGE_NAME "osquery")
 # set(CPACK_PACKAGE_VENDOR "osquery")
 # set(CPACK_PACKAGE_CONTACT "osquery@osquery.io")
@@ -36,9 +36,6 @@ include("platform/${platform_name}/common.cmake")
 
 string(TOLOWER "${CPACK_GENERATOR}" generator_name)
 include("platform/${platform_name}/${generator_name}.cmake")
-
-
-set(CPACK_PACKAGE_NAME "vistar")
 
 include(CPack)
 
