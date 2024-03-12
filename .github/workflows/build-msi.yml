@@ -2,7 +2,7 @@ name: Build file
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 concurrency:
   group: hosted-${{ github.event.pull_request.number || github.run_id }}
