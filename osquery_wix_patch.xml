@@ -28,7 +28,7 @@
     </CPackWiXFragment>
 
     <!-- Additional CPackWiXFragment elements to reference account properties -->
-    <CPackWiXFragment Id="#PRODUCT">
+    <CPackWiXFragment Id="CM_CP_vistar.vistar.exe">
         <PropertyRef Id="WIX_ACCOUNT_LOCALSYSTEM" />
         <PropertyRef Id="WIX_ACCOUNT_USERS" />
         <PropertyRef Id="WIX_ACCOUNT_ADMINISTRATORS" />
