@@ -187,21 +187,15 @@ class VistarSyncApp(QMainWindow):
             local_mac_address = self.get_mac_address()
 
             if local_mac_address:
-                response = requests.get("http://127.0.0.1:8000/api/v1/computers/get_mac_addresses/")
+                # Send local MAC address to the server
+                data = {"data": local_mac_address}
+                response = requests.post("http://127.0.0.1:8000/api/v1/computers/check_mac_address/", json=data)
                 print(response.status_code)
 
                 if response.status_code == 200:
-                    data_list = response.json()
-                    mac_address_matched = False
-
-                    for item in data_list:
-                        server_mac_address = item.get('data')
-
-                        # Remove the inner loop
-                        print(server_mac_address)
-                        if server_mac_address == local_mac_address:
-                            mac_address_matched = True
-                            break
+                    result = response.json()
+                    print(result)
+                    mac_address_matched = result.get("status")
 
                     if mac_address_matched:
                         message_box = QMessageBox()
@@ -218,7 +212,7 @@ class VistarSyncApp(QMainWindow):
 
                         message_box.exec_()
                         self.create_UI()
-                    elif len(data_list) > 0:
+                    else:
                         message_box = QMessageBox()
                         message_box.setWindowTitle("Vistar MDM . . .")
                         message_box.setText("Please Register before start sync.\n Go to our website and register \n https://vistar.cloude")
@@ -233,14 +227,13 @@ class VistarSyncApp(QMainWindow):
 
                         message_box.exec_()
                         self.warning_UI()
-                    else:
-                        QMessageBox.warning(self, "Empty MAC Address List", "No MAC addresses found in the database.")
                 else:
-                    print(f"Failed to fetch MAC addresses. status code: {response.status_code}")
+                    print(f"Failed to check MAC address. Status code: {response.status_code}")
             else:
                 QMessageBox.warning(self, "Failed to Get MAC Address", "Please check your internet")
         except requests.exceptions.RequestException as e:
-            print(f'Error fetching MAC addresses: {e}')
+            print(f'Error checking MAC address: {e}')
+
 
 
 
