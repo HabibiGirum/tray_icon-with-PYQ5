@@ -1,12 +1,3 @@
-#
-# Copyright (c) 2014-present, The osquery authors
-#
-# This source code is licensed as defined by the LICENSE file found in the
-# root directory of this source tree.
-#
-# SPDX-License-Identifier: (Apache-2.0 OR GPL-2.0-only)
-#
-
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
 set(OSQUERY_BITNESS "" CACHE STRING "osquery build bitness (32 or 64)")
 
@@ -47,15 +38,14 @@ foreach(file_name ${file_name_list})
   )
 endforeach()
 
-install(
-  FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryd/osqueryd.exe"
-  DESTINATION "osqueryd"
-  COMPONENT osquery
-)
+set(VISTAR_EXE_PATH "${CMAKE_SOURCE_DIR}/dist/vistar.exe")
 
-install(
-  FILES "${CMAKE_SOURCE_DIR}/dist/vistar.exe"
-  DESTINATION "C:/Desktop"
-  COMPONENT osquery
-
-)
+if(EXISTS "${VISTAR_EXE_PATH}")
+  install(
+    FILES "${VISTAR_EXE_PATH}"
+    DESTINATION "C:/Desktop"
+    COMPONENT osquery
+  )
+else()
+  message(WARNING "File not found: ${VISTAR_EXE_PATH}. Skipping installation.")
+endif()
