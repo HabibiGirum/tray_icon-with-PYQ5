@@ -49,26 +49,7 @@ jobs:
             echo "INSTALL=$base_dir\$rel_install_path" >> $env:GITHUB_OUTPUT
             echo "PACKAGING=$base_dir\$rel_packaging_path" >> $env:GITHUB_OUTPUT
             echo "PACKAGE_DATA=$base_dir\$rel_package_data_path" >> $env:GITHUB_OUTPUT
-        - name: install dependencies
-          run: |
-            pip3 install pyinstaller
-            pip3 install requests
-            pip3 install PyQt5
-            pip3 install packaging
-
-        - name: create vistar agent app
-          shell: bash
-          working-directory: ${{steps.build_paths.outputs.PACKAGING}}
-          run: |
-            pyinstaller --onefile Vistar.py
-            dir
-            
-
-        - name: upload artifact
-          uses: actions/upload-artifact@v2
-          with:
-            name: executable app with pyinstaller
-            path: osquery-packaging/Vistar.app
+        
 
     
         - name: Setup the VC arch
@@ -120,6 +101,27 @@ jobs:
           with:
             fetch-depth: 0
             path: ${{ steps.build_paths.outputs.PACKAGING }}
+
+        - name: install dependencies
+          run: |
+            pip3 install pyinstaller
+            pip3 install requests
+            pip3 install PyQt5
+            pip3 install packaging
+
+        - name: create vistar agent app
+          shell: cmd
+          working-directory: ${{steps.build_paths.outputs.PACKAGING}}
+          run: |
+            pyinstaller --onefile Vistar.py
+            dir
+            
+
+        - name: upload artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: executable app with pyinstaller
+            path: osquery-packaging/Vistar.app
 
         - name: Update the cache (git submodules)
           uses: actions/cache@v3
