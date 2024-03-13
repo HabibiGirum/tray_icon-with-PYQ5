@@ -59,6 +59,7 @@ jobs:
         echo "PACKAGING=$base_dir\$rel_packaging_path" >> $env:GITHUB_OUTPUT
         echo "PACKAGE_DATA=$base_dir\$rel_package_data_path" >> $env:GITHUB_OUTPUT
 
+        dir
     - name: Setup the VC arch
       shell: powershell
       id: vc_arch
