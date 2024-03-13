@@ -9,7 +9,10 @@ set(CPACK_PACKAGE_VERSION "1.0.1")
 if(OSQUERY_DATA_PATH STREQUAL "")
   message(FATAL_ERROR "Missing data folder")
 endif()
+set(CPACK_GENERATOR "WIX")
 
+
+set(OSQUERY_BITNESS "64")
 
 set(CPACK_PACKAGE_DESCRIPTION "osquery is an operating system instrumentation toolchain.")
 set(CPACK_COMPONENT_OSQUERY_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}")
