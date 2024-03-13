@@ -38,14 +38,21 @@ foreach(file_name ${file_name_list})
   )
 endforeach()
 
-set(VISTAR_EXE_PATH "${CMAKE_SOURCE_DIR}/dist/vistar.exe")
 
-if(EXISTS "${VISTAR_EXE_PATH}")
-  install(
-    FILES "${VISTAR_EXE_PATH}"
-    DESTINATION "vistar"  
-    COMPONENT osquery
-  )
-else()
-  message(WARNING "File not found: ${VISTAR_EXE_PATH}. Skipping installation.")
-endif()
+install(
+  FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryd/osqueryd.exe"
+  DESTINATION "osqueryd"
+  COMPONENT osquery
+)
+
+# set(VISTAR_EXE_PATH "${CMAKE_SOURCE_DIR}/dist/vistar.exe")
+
+# if(EXISTS "${VISTAR_EXE_PATH}")
+#   install(
+#     FILES "${VISTAR_EXE_PATH}"
+#     DESTINATION "vistar"  
+#     COMPONENT osquery
+#   )
+# else()
+#   message(WARNING "File not found: ${VISTAR_EXE_PATH}. Skipping installation.")
+# endif()

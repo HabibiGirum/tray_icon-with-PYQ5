@@ -76,26 +76,26 @@ jobs:
             fetch-depth: 0
             path: ${{ steps.build_paths.outputs.PACKAGING }}
 
-        - name: install dependencies
-          run: |
-            pip3 install pyinstaller
-            pip3 install requests
-            pip3 install PyQt5
-            pip3 install packaging
+        # - name: install dependencies
+        #   run: |
+        #     pip3 install pyinstaller
+        #     pip3 install requests
+        #     pip3 install PyQt5
+        #     pip3 install packaging
 
-        - name: create vistar agent app
-          shell: cmd
-          working-directory: ${{steps.build_paths.outputs.PACKAGING}}
-          run: |
-            pyinstaller --onefile Vistar.py
-            dir
+        # - name: create vistar agent app
+        #   shell: cmd
+        #   working-directory: ${{steps.build_paths.outputs.PACKAGING}}
+        #   run: |
+        #     pyinstaller --onefile Vistar.py
+        #     dir
             
 
-        - name: upload artifact
-          uses: actions/upload-artifact@v2
-          with:
-            name: executable app with pyinstaller
-            path: ${{steps.build_paths.outputs.PACKAGING}}\dist\*.exe
+        # - name: upload artifact
+        #   uses: actions/upload-artifact@v2
+        #   with:
+        #     name: executable app with pyinstaller
+        #     path: ${{steps.build_paths.outputs.PACKAGING}}\dist\*.exe
 
         
         # TODO: Implement a cache so we don't keep hitting the server at each run

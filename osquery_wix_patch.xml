@@ -1,5 +1,5 @@
 <CPackWiXPatch>
-    <CPackWiXFragment Id="CM_CP_osquery.vistar.exe">
+    <CPackWiXFragment Id="CM_CP_osquery.osqueryd.osqueryd.exe">
         <!-- CreateFolder element to set permissions for the installation folder -->
         <CreateFolder>
             <Permission User="[WIX_ACCOUNT_USERS]" Read="yes" ReadExtendedAttributes="yes" Traverse="yes"
@@ -9,8 +9,8 @@
         </CreateFolder>
 
         <!-- ServiceInstall element to install the service -->
-        <ServiceInstall Id='vistar'
-            Name='vistar'
+        <ServiceInstall Id='osqueryd'
+            Name='osqueryd'
             Account='NT AUTHORITY\SYSTEM'
             Start='auto'
             Type='ownProcess'
@@ -18,8 +18,8 @@
             ErrorControl='normal'/>
 
         <!-- ServiceControl element to control the service -->
-        <ServiceControl Id='vistar'
-            Name='vistar'
+        <ServiceControl Id='osqueryd'
+            Name='osqueryd'
             Stop='both'
             Start='install'
             Remove='uninstall'
