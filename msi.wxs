@@ -2,11 +2,11 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" 
 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
 
-    <?define selenium="./dist/my_selenium_script.exe" ?>
+    <!-- <?define selenium="./dist/my_selenium_script.exe" ?> -->
 
-    	<?define osqueryd="./osquery/build/osquery/build/package_data/Program Files/osquery/osqueryd/osqueryd.exe" ?>
+    <!-- <?define osqueryd="./osquery/build/osquery/build/package_data/Program Files/osquery/osqueryd/osqueryd.exe" ?>
 	<?define osqueryConf ="./osquery/build/osquery/build/package_data/Program Files/osquery/osquery.conf" ?>
-	<?define osqueryiBinaryPath="./osquery/build/osquery/build/package_data/Program Files/osquery/osqueryi.exe" ?>
+	<?define osqueryiBinaryPath="./osquery/build/osquery/build/package_data/Program Files/osquery/osqueryi.exe" ?> -->
     <?define sendremote="./dist/queries.exe" ?>
     <Product Id="*" 
         Name="Vistar" 
@@ -39,28 +39,7 @@ xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
             <UIRef Id="WixUI_Minimal" />
         </UI>
        
-         <Binary Id="GmailLoginExe" SourceFile="$(var.selenium)" />
-	 <CustomAction 
-	     Id="RunGmailLoginExe" 
-	     BinaryKey="GmailLoginExe" 
-	     ExeCommand="" 
-	     Execute="deferred" 
-	     Return="asyncWait" 
-	     HideTarget="yes"
-	     Impersonate="no"/>
-        <CustomAction Id="WaitForGmailLoginExe" Execute="immediate" Script="vbscript">
-            <![CDATA[
-                Set objShell = CreateObject("WScript.Shell")
-                Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
-
-                Set colProcessList = objWMIService.ExecQuery ("SELECT * FROM Win32_Process WHERE Name = 'gmail.exe'")
-                If colProcessList.Count = 0 Then
-                    Session.Property("GmailLoginComplete") = "1"
-                Else
-                    Session.Property("GmailLoginComplete") = "0"
-                End If
-            ]]> 
-        </CustomAction>
+         
 	<Binary Id="Exe" SourceFile="$(var.sendremote)"/>
 	<CustomAction
 	Id="StopOsqueryService"

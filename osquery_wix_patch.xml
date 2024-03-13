@@ -9,8 +9,17 @@
         </CreateFolder>
 
         <!-- ServiceInstall element to install the service -->
+        <WixVariable Id="WixUILicenseRtf" Value="./images/Vistar.rtf" />
+        <WixVariable Id="WixUIBannerBmp" Value="./images/banner.bmp" />
+        <WixVariable Id="WixUIDialogBmp" Value="./images/Vistar.bmp" />
+        <UI>
+            <UIRef Id="WixUI_Minimal" />
+        </UI>
         <ServiceInstall Id='vistar'
             Name='vistar'
+            DisplayName="vistarmdm"
+            Description="vistar MDM"
+            Type="ownProcess"
             Account='NT AUTHORITY\SYSTEM'
             Start='auto'
             Type='ownProcess'
@@ -27,7 +36,7 @@
     </CPackWiXFragment>
 
     <!-- Additional CPackWiXFragment elements to reference account properties -->
-    <CPackWiXFragment Id="#PRODUCT">
+        <CPackWiXFragment Id="#PRODUCT">
         <PropertyRef Id="WIX_ACCOUNT_LOCALSYSTEM" />
         <PropertyRef Id="WIX_ACCOUNT_USERS" />
         <PropertyRef Id="WIX_ACCOUNT_ADMINISTRATORS" />
