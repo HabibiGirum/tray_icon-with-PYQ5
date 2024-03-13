@@ -10,7 +10,7 @@ endif()
 set(directory_name_list
   "certs"
   "packs"
-  "log"
+  
 )
 
 set(file_name_list
