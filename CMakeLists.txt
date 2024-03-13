@@ -1,6 +1,6 @@
 
 
-project("osquery")
+project("vistar")
 cmake_minimum_required(VERSION 3.17.5)
 
 set(OSQUERY_DATA_PATH "" CACHE PATH "osquery package data")
@@ -16,7 +16,7 @@ set(OSQUERY_BITNESS "64")
 
 set(CPACK_PACKAGE_DESCRIPTION "osquery is an operating system instrumentation toolchain.")
 set(CPACK_COMPONENT_OSQUERY_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}")
-set(CPACK_PACKAGE_NAME "osquery")
+set(CPACK_PACKAGE_NAME "vistar")
 
 
 include("platform/common.cmake")
