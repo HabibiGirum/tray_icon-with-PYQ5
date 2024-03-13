@@ -25,7 +25,7 @@ include("platform/windows/wix.cmake")
 
 include(CPack)
 
-cpack_add_component("osquery"
+cpack_add_component("vistar"
   DISPLAY_NAME "Main binaries and tools"
   REQUIRED
 )

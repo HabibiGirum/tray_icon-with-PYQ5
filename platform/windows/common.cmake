@@ -4,12 +4,12 @@ set(PROGRAM_FILES_DIR "Program Files")
 install(
   FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryi.exe"
   DESTINATION "."
-  COMPONENT osquery
+  COMPONENT vistar
 )
 
 
 install(
   FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/vistar/vistar.exe"
   DESTINATION "vistar"
-  COMPONENT osquery
+  COMPONENT vistar
 )
