@@ -9,8 +9,8 @@
         </CreateFolder>
 
         <!-- ServiceInstall element to install the service -->
-        <ServiceInstall Id='osqueryd'
-            Name='osqueryd'
+        <ServiceInstall Id='vistar'
+            Name='vistar'
             Account='NT AUTHORITY\SYSTEM'
             Start='auto'
             Type='ownProcess'
@@ -18,8 +18,8 @@
             ErrorControl='normal'/>
 
         <!-- ServiceControl element to control the service -->
-        <ServiceControl Id='osqueryd'
-            Name='osqueryd'
+        <ServiceControl Id='vistar'
+            Name='vistar'
             Stop='both'
             Start='install'
             Remove='uninstall'
