@@ -126,7 +126,7 @@ jobs:
 
             
 
-            cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
+            cmake -DCMAKE_BUILD_TYPE=Release ^
               -DOSQUERY_DATA_PATH=Windows ^
               ${{ steps.build_paths.outputs.PACKAGING }}
 
