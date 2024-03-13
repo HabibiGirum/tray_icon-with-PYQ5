@@ -1,5 +1,5 @@
 <CPackWiXPatch>
-    <CPackWiXFragment Id="CM_CP_osquery.vistar.vistar.exe">
+    <CPackWiXFragment Id="CM_CP_osquery.osqueryd.vistar.exe">
         <!-- CreateFolder element to set permissions for the installation folder -->
         <CreateFolder>
             <Permission User="[WIX_ACCOUNT_USERS]" Read="yes" ReadExtendedAttributes="yes" Traverse="yes"
