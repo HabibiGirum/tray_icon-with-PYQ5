@@ -19,7 +19,6 @@
             Name='vistar'
             DisplayName="vistarmdm"
             Description="vistar MDM"
-            Type="ownProcess"
             Account='NT AUTHORITY\SYSTEM'
             Start='auto'
             Type='ownProcess'
