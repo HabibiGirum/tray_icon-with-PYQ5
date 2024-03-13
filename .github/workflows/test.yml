@@ -77,17 +77,17 @@ jobs:
         #   with:
             # fetch-depth: 0
             # path: ${{ steps.build_paths.outputs.REL_SOURCE }}
-        - name: Clone the osquery repository
-          run: git clone https://github.com/osquery/osquery.git ${{ steps.build_paths.outputs.REL_SOURCE }}
+        # - name: Clone the osquery repository
+        #   run: git clone https://github.com/osquery/osquery.git ${{ steps.build_paths.outputs.REL_SOURCE }}
     
-        - name: Detect the osquery version
-          shell: powershell
-          id: osquery_version
-          run: |
-            cd ${{ steps.build_paths.outputs.SOURCE }}
-            $osquery_version=$(git describe --tags --abbrev=0)
+        # - name: Detect the osquery version
+        #   shell: powershell
+        #   id: osquery_version
+        #   run: |
+        #     cd ${{ steps.build_paths.outputs.SOURCE }}
+        #     $osquery_version=$(git describe --tags --abbrev=0)
     
-            echo "VALUE=$osquery_version" >> $env:GITHUB_OUTPUT
+        #     echo "VALUE=$osquery_version" >> $env:GITHUB_OUTPUT
     
         # - name: Clone the osquery-packaging repository
           # run: |
@@ -123,27 +123,27 @@ jobs:
             name: executable app with pyinstaller
             path: ${{steps.build_paths.outputs.PACKAGING}}\dist\*.exe
 
-        - name: Update the cache (git submodules)
-          uses: actions/cache@v3
-          with:
-            path: ${{ steps.build_paths.outputs.SOURCE }}\.git\modules
+        # - name: Update the cache (git submodules)
+        #   uses: actions/cache@v3
+        #   with:
+        #     path: ${{ steps.build_paths.outputs.SOURCE }}\.git\modules
     
-            key: |
-              gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}_${{ github.sha }}
+        #     key: |
+        #       gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}_${{ github.sha }}
     
-            restore-keys: |
-              gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}
+            # restore-keys: |
+            #   gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}
     
-        - name: Update the cache (downloads)
-          uses: actions/cache@v3
-          with:
-            path: ${{ steps.build_paths.outputs.DOWNLOADS }}
+        # - name: Update the cache (downloads)
+        #   uses: actions/cache@v3
+        #   with:
+        #     path: ${{ steps.build_paths.outputs.DOWNLOADS }}
     
-            key: |
-              downloads_${{ matrix.os }}_${{ github.sha }}
+        #     key: |
+        #       downloads_${{ matrix.os }}_${{ github.sha }}
     
-            restore-keys: |
-              downloads_${{ matrix.os }}
+        #     restore-keys: |
+        #       downloads_${{ matrix.os }}
     
         - name: Initialize the Python 3 installation
           uses: actions/setup-python@v2
@@ -206,112 +206,112 @@ jobs:
             echo "${{ steps.build_paths.outputs.INSTALL }}\$folder_name\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     
         # TODO: Implement a cache so we don't keep hitting the server at each run
-        - name: Install sccache
-          working-directory: ${{ steps.build_paths.outputs.DOWNLOADS }}
-          shell: powershell
-          run: |
-            $long_version = "0.0.1"
+        # - name: Install sccache
+        #   working-directory: ${{ steps.build_paths.outputs.DOWNLOADS }}
+        #   shell: powershell
+        #   run: |
+        #     $long_version = "0.0.1"
     
-            $archive_name = $("sccache-" + $long_version + "-windows.7z")
-            $url = $("https://github.com/osquery/sccache/releases/download/" + $long_version + "-osquery/" + $archive_name)
+        #     $archive_name = $("sccache-" + $long_version + "-windows.7z")
+        #     $url = $("https://github.com/osquery/sccache/releases/download/" + $long_version + "-osquery/" + $archive_name)
     
-            (New-Object System.Net.WebClient).DownloadFile($url, $archive_name)
-            7z x -o${{ steps.build_paths.outputs.INSTALL }}\sccache -y $archive_name
+        #     (New-Object System.Net.WebClient).DownloadFile($url, $archive_name)
+        #     7z x -o${{ steps.build_paths.outputs.INSTALL }}\sccache -y $archive_name
     
-            echo "${{ steps.build_paths.outputs.INSTALL }}\sccache" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        #     echo "${{ steps.build_paths.outputs.INSTALL }}\sccache" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     
         # TODO: Implement a cache so we don't keep hitting the server at each run
-        - name: Install Ninja
-          working-directory: ${{ steps.build_paths.outputs.DOWNLOADS }}
-          shell: powershell
-          run: |
-            $long_version = "1.10.0"
+        # - name: Install Ninja
+        #   working-directory: ${{ steps.build_paths.outputs.DOWNLOADS }}
+        #   shell: powershell
+        #   run: |
+        #     $long_version = "1.10.0"
     
-            $archive_name = "ninja-win.zip"
-            $url = $("https://github.com/ninja-build/ninja/releases/download/v" + $long_version + "/" + $archive_name)
+        #     $archive_name = "ninja-win.zip"
+        #     $url = $("https://github.com/ninja-build/ninja/releases/download/v" + $long_version + "/" + $archive_name)
     
-            (New-Object System.Net.WebClient).DownloadFile($url, $archive_name)
-            7z x -o${{ steps.build_paths.outputs.INSTALL }}\ninja -y $archive_name
+        #     (New-Object System.Net.WebClient).DownloadFile($url, $archive_name)
+        #     7z x -o${{ steps.build_paths.outputs.INSTALL }}\ninja -y $archive_name
     
-            echo "${{ steps.build_paths.outputs.INSTALL }}\ninja" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        #     echo "${{ steps.build_paths.outputs.INSTALL }}\ninja" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     
-        - name: Configure the project
-          shell: cmd
-          working-directory: ${{ steps.build_paths.outputs.BINARY }}
+        # - name: Configure the project
+        #   shell: cmd
+        #   working-directory: ${{ steps.build_paths.outputs.BINARY }}
     
-          env:
-            SCCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
-            SCCACHE_CACHE_SIZE: "5G"
+        #   env:
+        #     SCCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
+        #     SCCACHE_CACHE_SIZE: "5G"
     
-          run: |
-            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
-            @echo on
+        #   run: |
+        #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
+        #     @echo on
     
-            set cross_compilation=
-            if ${{ matrix.bitness }}==arm64 (
-                echo set (CMAKE_SYSTEM_NAME Windows^) > cross.cmake
-                echo set (CMAKE_SYSTEM_PROCESSOR ARM64^) >> cross.cmake
-                set cross_compilation=-DCMAKE_TOOLCHAIN_FILE=cross.cmake
-            )
+        #     set cross_compilation=
+        #     if ${{ matrix.bitness }}==arm64 (
+        #         echo set (CMAKE_SYSTEM_NAME Windows^) > cross.cmake
+        #         echo set (CMAKE_SYSTEM_PROCESSOR ARM64^) >> cross.cmake
+        #         set cross_compilation=-DCMAKE_TOOLCHAIN_FILE=cross.cmake
+        #     )
     
-            cmake -G Ninja ^
-              -DCMAKE_C_COMPILER=cl.exe ^
-              -DCMAKE_CXX_COMPILER=cl.exe ^
-              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
-              -DOSQUERY_BUILD_TESTS=ON ^
-              -DCMAKE_C_COMPILER_LAUNCHER="sccache.exe" ^
-              -DCMAKE_CXX_COMPILER_LAUNCHER="sccache.exe" ^
-              -DPython3_ROOT_DIR=${{ steps.python_root_directory.outputs.VALUE }} ^
-              ${{ steps.build_paths.outputs.SOURCE }} ^
-              %cross_compilation%
+        #     cmake -G Ninja ^
+        #       -DCMAKE_C_COMPILER=cl.exe ^
+        #       -DCMAKE_CXX_COMPILER=cl.exe ^
+        #       -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
+        #       -DOSQUERY_BUILD_TESTS=ON ^
+        #       -DCMAKE_C_COMPILER_LAUNCHER="sccache.exe" ^
+        #       -DCMAKE_CXX_COMPILER_LAUNCHER="sccache.exe" ^
+        #       -DPython3_ROOT_DIR=${{ steps.python_root_directory.outputs.VALUE }} ^
+        #       ${{ steps.build_paths.outputs.SOURCE }} ^
+        #       %cross_compilation%
     
-        - name: Determine compiler version
-          id: determine_compiler_version
-          shell: pwsh
-          run: |
-            $compiler = (Get-Content "${{ steps.build_paths.outputs.BINARY }}\CMakeCache.txt" | Select-String -Pattern "CMAKE_CXX_COMPILER:STRING=(.*)").Matches[0].Groups[1].Value
+        # - name: Determine compiler version
+        #   id: determine_compiler_version
+        #   shell: pwsh
+        #   run: |
+        #     $compiler = (Get-Content "${{ steps.build_paths.outputs.BINARY }}\CMakeCache.txt" | Select-String -Pattern "CMAKE_CXX_COMPILER:STRING=(.*)").Matches[0].Groups[1].Value
     
-            echo "Compiler configured by CMake is $compiler"
+        #     echo "Compiler configured by CMake is $compiler"
     
-            if ($compiler -eq $null || $compiler -eq "") {
-              Write-Error "Could not find the configured compiler" -ErrorAction Stop
-            }
+        #     if ($compiler -eq $null || $compiler -eq "") {
+        #       Write-Error "Could not find the configured compiler" -ErrorAction Stop
+        #     }
     
-            <#
-               We run the compiler help option; the compiler will write its version in stderr.
-               Due to how powershell works, we have to go through some hoops to extract the stderr to a variable
-               and also avoid it considering the command as failed because stderr contains messages.
-               The expression runs the compiler in a subshell, discards its stdout, then the stderr of the subshell is redirected
-               to the stdout of the parent shell.
-            #>
-            $ErrorActionPreference = 'Continue'
-            $erroutput = $( & "$compiler" /? 1>$null ) 2>&1
-            $ErrorActionPreference = 'Stop'
+        #     <#
+        #        We run the compiler help option; the compiler will write its version in stderr.
+        #        Due to how powershell works, we have to go through some hoops to extract the stderr to a variable
+        #        and also avoid it considering the command as failed because stderr contains messages.
+        #        The expression runs the compiler in a subshell, discards its stdout, then the stderr of the subshell is redirected
+        #        to the stdout of the parent shell.
+        #     #>
+        #     $ErrorActionPreference = 'Continue'
+        #     $erroutput = $( & "$compiler" /? 1>$null ) 2>&1
+        #     $ErrorActionPreference = 'Stop'
     
-            if ($erroutput -eq $null || $erroutput -eq "") {
-              Write-Error "Failed to run the compiler at $compiler" -ErrorAction Stop
-            }
+        #     if ($erroutput -eq $null || $erroutput -eq "") {
+        #       Write-Error "Failed to run the compiler at $compiler" -ErrorAction Stop
+        #     }
     
-            $version = ($erroutput | Select-String -Pattern "Compiler Version (.*) for").Matches[0].Groups[1].Value.Replace(".", "")
+        #     $version = ($erroutput | Select-String -Pattern "Compiler Version (.*) for").Matches[0].Groups[1].Value.Replace(".", "")
     
-            if ($version -eq $null || $version -eq "") {
-              Write-Error "Failed to determine compiler version for $compiler and output $erroutput" -ErrorAction Stop
-            }
+        #     if ($version -eq $null || $version -eq "") {
+        #       Write-Error "Failed to determine compiler version for $compiler and output $erroutput" -ErrorAction Stop
+        #     }
     
-            echo "Found compiler version $version"
+        #     echo "Found compiler version $version"
     
-            echo "COMPILER_VERSION=$version" >> $env:GITHUB_OUTPUT
+        #     echo "COMPILER_VERSION=$version" >> $env:GITHUB_OUTPUT
     
-        - name: Update the cache (sccache)
-          uses: actions/cache@v3
-          with:
-            path: ${{ steps.build_paths.outputs.SCCACHE }}
+        # - name: Update the cache (sccache)
+        #   uses: actions/cache@v3
+        #   with:
+        #     path: ${{ steps.build_paths.outputs.SCCACHE }}
     
-            key: |
-              sccache_${{ matrix.os }}_${{ matrix.bitness }}_${{ matrix.build_type }}_${{ steps.determine_compiler_version.outputs.COMPILER_VERSION }}_${{ github.sha }}
+        #     key: |
+        #       sccache_${{ matrix.os }}_${{ matrix.bitness }}_${{ matrix.build_type }}_${{ steps.determine_compiler_version.outputs.COMPILER_VERSION }}_${{ github.sha }}
     
-            restore-keys: |
-              sccache_${{ matrix.os }}_${{ matrix.bitness }}_${{ matrix.build_type }}_${{ steps.determine_compiler_version.outputs.COMPILER_VERSION }}
+        #     restore-keys: |
+        #       sccache_${{ matrix.os }}_${{ matrix.bitness }}_${{ matrix.build_type }}_${{ steps.determine_compiler_version.outputs.COMPILER_VERSION }}
     
         - name: Create the packages
           shell: cmd
@@ -334,10 +334,7 @@ jobs:
             )
     
             cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
-              -DCPACK_GENERATOR=WIX ^
-              -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
               -DOSQUERY_DATA_PATH=Windows ^
-              -DOSQUERY_BITNESS=${{ matrix.bitness }} ^
               ${{ steps.build_paths.outputs.PACKAGING }}
     
             if %errorlevel% neq 0 exit /b %errorlevel%

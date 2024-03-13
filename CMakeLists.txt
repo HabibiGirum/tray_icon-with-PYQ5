@@ -4,15 +4,16 @@ project("osquery")
 cmake_minimum_required(VERSION 3.17.5)
 
 set(OSQUERY_DATA_PATH "" CACHE PATH "osquery package data")
-set(CPACK_PACKAGE_VERSION "" CACHE STRING "osquery package version")
+set(CPACK_PACKAGE_VERSION "1.0.1")
 
 if(OSQUERY_DATA_PATH STREQUAL "")
   message(FATAL_ERROR "Missing data folder")
 endif()
+# set(CPACK_GENERATOR "WIX")
 
-if(NOT CPACK_GENERATOR)
-  message(FATAL_ERROR "The CPACK_GENERATOR variable was not set")
-endif()
+# if(NOT CPACK_GENERATOR)
+#   message(FATAL_ERROR "The CPACK_GENERATOR variable was not set")
+# endif()
 
 if(OSQUERY_PACKAGE_VERSION STREQUAL "")
   message(FATAL_ERROR "The OSQUERY_PACKAGE_VERSION variable was not set")
@@ -26,16 +27,16 @@ set(CPACK_PACKAGE_NAME "osquery")
 # set(CPACK_PACKAGE_CONTACT "osquery@osquery.io")
 # set(CPACK_PACKAGE_HOMEPAGE_URL "https://osquery.io")
 
-string(TOLOWER "${CMAKE_SYSTEM_NAME}" platform_name)
-if(platform_name STREQUAL "darwin")
-  set(platform_name "macos")
-endif()
+# string(TOLOWER "${CMAKE_SYSTEM_NAME}" platform_name)
+# if(platform_name STREQUAL "darwin")
+#   set(platform_name "macos")
+# endif()
 
 include("platform/common.cmake")
-include("platform/${platform_name}/common.cmake")
+include("platform/windows/common.cmake")
 
-string(TOLOWER "${CPACK_GENERATOR}" generator_name)
-include("platform/${platform_name}/${generator_name}.cmake")
+# string(TOLOWER "${CPACK_GENERATOR}" generator_name)
+include("platform/windows/wix.cmake")
 
 include(CPack)
 
