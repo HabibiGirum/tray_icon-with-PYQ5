@@ -322,16 +322,7 @@ jobs:
     
             cd ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
     
-            7z ^
-              a windows_package_data.zip ^
-              ${{ steps.build_paths.outputs.PACKAGE_DATA }}
-    
-            if %errorlevel% neq 0 exit /b %errorlevel%
-    
-            if ${{ matrix.bitness }}==arm64 (
-               echo Do not create other packages for arm64
-               exit 0
-            )
+            
     
             cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
               -DOSQUERY_DATA_PATH=Windows ^
