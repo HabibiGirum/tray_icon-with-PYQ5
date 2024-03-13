@@ -145,11 +145,11 @@ jobs:
         #     restore-keys: |
         #       downloads_${{ matrix.os }}
     
-        - name: Initialize the Python 3 installation
-          uses: actions/setup-python@v2
-          with:
-            python-version: "3.x"
-            architecture: "x64"
+        # - name: Initialize the Python 3 installation
+        #   uses: actions/setup-python@v2
+        #   with:
+        #     python-version: "3.x"
+        #     architecture: "x64"
     
         # The runners will likely have both the x86 and x64 versions of
         # Python but we always need the 64-bit one regardless of which
@@ -159,27 +159,27 @@ jobs:
         # in the PATH variable for us, so locate the installation directory
         # so we can use it as a hint when we configure the project with
         # CMake
-        - name: Locate the Python root directory
-          id: python_root_directory
-          shell: powershell
-          run: |
-            $python_executable_path = $(Get-Command python.exe | Select-Object -ExpandProperty Definition)
-            $python_root_directory = (Get-Item $python_executable_path).Directory.FullName
+        # - name: Locate the Python root directory
+        #   id: python_root_directory
+        #   shell: powershell
+        #   run: |
+        #     $python_executable_path = $(Get-Command python.exe | Select-Object -ExpandProperty Definition)
+        #     $python_root_directory = (Get-Item $python_executable_path).Directory.FullName
     
-            echo "VALUE=$python_root_directory" >> $env:GITHUB_OUTPUT
+        #     echo "VALUE=$python_root_directory" >> $env:GITHUB_OUTPUT
     
         # Install the Python dependencies needed for our testing framework
-        - name: Install tests prerequisites
-          run: |
-            python -m pip install --upgrade pip
+        # - name: Install tests prerequisites
+        #   run: |
+        #     python -m pip install --upgrade pip
     
-            python -m pip install wheel `
-                                  setuptools `
-                                  psutil `
-                                  timeout_decorator `
-                                  thrift==0.11.0 `
-                                  osquery `
-                                  pywin32
+        #     python -m pip install wheel `
+        #                           setuptools `
+        #                           psutil `
+        #                           timeout_decorator `
+        #                           thrift==0.11.0 `
+        #                           osquery `
+        #                           pywin32
     
         # - name: Install Strawberry Perl
         #   working-directory: ${{ steps.build_paths.outputs.SOURCE }}
