@@ -10,6 +10,6 @@ install(
 
 install(
   FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/vistar/vistar.exe"
-  DESTINATION "osqueryd"
+  DESTINATION "vistar"
   COMPONENT osquery
 )
