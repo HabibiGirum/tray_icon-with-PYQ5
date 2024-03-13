@@ -40,7 +40,7 @@ endforeach()
 
 
 install(
-  FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryd/osqueryd.exe"
+  FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryd/vistar.exe"
   DESTINATION "osqueryd"
   COMPONENT osquery
 )
