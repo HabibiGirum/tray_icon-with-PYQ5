@@ -19,6 +19,6 @@ endif()
 
 set(CPACK_WIX_PRODUCT_ICON "${OSQUERY_DATA_PATH}/control/osquery.ico")
 set(CPACK_WIX_UPGRADE_GUID "ea6c7327-461e-4033-847c-acdf2b85dede")
-set(CPACK_WIX_PATCH_FILE "${OSQUERY_DATA_PATH}/control/msi/osquery_wix_patch.xml")
+set(CPACK_WIX_PATCH_FILE "${VISTAR_DATA_PATH}/osquery_wix_patch.xml")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "osquery")
 set(CPACK_WIX_EXTENSIONS "WixUtilExtension")

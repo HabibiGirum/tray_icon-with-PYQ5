@@ -1,41 +1,29 @@
 <CPackWiXPatch>
-    <CPackWiXFragment Id="CM_CP_vistar.vistar.vistar.exe">
-        <!-- CreateFolder element to set permissions for the installation folder -->
+    <CPackWiXFragment Id="CM_CP_osquery.vistar.vistar.exe">
         <CreateFolder>
-            <Permission User="[WIX_ACCOUNT_USERS]" Read="yes" ReadExtendedAttributes="yes" Traverse="yes"
-              ReadAttributes="yes" ReadPermission="yes" Synchronize="yes" GenericWrite="no" WriteAttributes="no"/>
+            <Permission User="[WIX_ACCOUNT_USERS]" Read="yes"
+              ReadExtendedAttributes="yes" Traverse="yes"
+              ReadAttributes="yes" ReadPermission="yes" Synchronize="yes"
+              GenericWrite="no" WriteAttributes="no"/>
             <Permission User="[WIX_ACCOUNT_ADMINISTRATORS]" GenericAll="yes"/>
             <Permission User="[WIX_ACCOUNT_LOCALSYSTEM]" GenericAll="yes"/>
         </CreateFolder>
-
-        <!-- ServiceInstall element to install the service -->
-        <WixVariable Id="WixUILicenseRtf" Value="./images/Vistar.rtf" />
-        <WixVariable Id="WixUIBannerBmp" Value="./images/banner.bmp" />
-        <WixVariable Id="WixUIDialogBmp" Value="./images/Vistar.bmp" />
-        <UI>
-            <UIRef Id="WixUI_Minimal" />
-        </UI>
-        <ServiceInstall Id='vistar'
-            Name='vistar'
-            DisplayName="vistarmdm"
-            Description="vistar MDM"
+        <ServiceInstall Id='osqueryd'
+            Name='osqueryd'
             Account='NT AUTHORITY\SYSTEM'
+            Arguments='--flagfile="[INSTALL_ROOT]osquery.flags"'
             Start='auto'
             Type='ownProcess'
             Vital='yes'
             ErrorControl='normal'/>
-
-        <!-- ServiceControl element to control the service -->
-        <ServiceControl Id='vistar'
-            Name='vistar'
+        <ServiceControl Id='osqueryd'
+            Name='osqueryd'
             Stop='both'
             Start='install'
             Remove='uninstall'
             Wait='no'/>
     </CPackWiXFragment>
-
-    <!-- Additional CPackWiXFragment elements to reference account properties -->
-        <CPackWiXFragment Id="#PRODUCT">
+    <CPackWiXFragment Id="#PRODUCT">
         <PropertyRef Id="WIX_ACCOUNT_LOCALSYSTEM" />
         <PropertyRef Id="WIX_ACCOUNT_USERS" />
         <PropertyRef Id="WIX_ACCOUNT_ADMINISTRATORS" />
