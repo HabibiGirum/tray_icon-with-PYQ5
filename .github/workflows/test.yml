@@ -410,13 +410,13 @@ jobs:
         echo "REL_UNSIGNED_RELEASE_PACKAGE_DATA_PATH=$(ls *.zip)" >> $GITHUB_OUTPUT
         echo "REL_UNSIGNED_RELEASE_MSI_PATH=$(ls *.msi)" >> $GITHUB_OUTPUT
         echo "REL_UNSIGNED_RELEASE_NUPKG_PATH=$(ls *.nupkg)" >> $GITHUB_OUTPUT
-        dir
+        
     - name: upload package by habtamu
       working-directory: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
       id: Habtamu
       shell: bash
       run: |
-        dir
+        
         echo "REL_UNSIGNED_PACKAGE=$(ls)" >> $GITHUB_OUTPUT
 
     - name: Store the unsigned release package data artifact
