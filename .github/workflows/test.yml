@@ -428,29 +428,4 @@ jobs:
       
         
 
-    - name: Store the unsigned release package data artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: windows${{ matrix.bitness }}_unsigned_release_package_data
-        path: ${{ steps.packages.outputs.REL_UNSIGNED_RELEASE_PACKAGE_DATA_PATH }}
-
-    - name: Store the unsigned release MSI artifact
-      if: matrix.bitness != 'arm64'
-      uses: actions/upload-artifact@v1
-      with:
-        name: windows${{ matrix.bitness }}_unsigned_release_msi
-        path: ${{ steps.packages.outputs.REL_UNSIGNED_RELEASE_MSI_PATH }}
-
-    - name: Store the unsigned release NUPKG artifact
-      if: matrix.bitness != 'arm64'
-      uses: actions/upload-artifact@v1
-      with:
-        name: windows${{ matrix.bitness }}_unsigned_release_nupkg
-        path: ${{ steps.packages.outputs.REL_UNSIGNED_RELEASE_NUPKG_PATH }}
-
-    # Before we terminate this job, delete the build folder. The cache
-    # actions will require the disk space to create the archives.
-    - name: Reclaim disk space
-      shell: powershell
-      run: |
-        rm -r -Force ${{ steps.build_paths.outputs.BINARY }}
+    
