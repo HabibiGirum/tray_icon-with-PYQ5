@@ -7,10 +7,10 @@ on:
 concurrency:
   group: hosted-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
-env:
-  PACKAGING_REPO: https://github.com/osquery/osquery-packaging
-  PACKAGING_COMMIT: 4caa2c54f0d893c1efa47932571046bbce156c52
-  SUBMODULE_CACHE_VERSION: 2
+# env:
+#   PACKAGING_REPO: https://github.com/osquery/osquery-packaging
+#   PACKAGING_COMMIT: 4caa2c54f0d893c1efa47932571046bbce156c52
+#   SUBMODULE_CACHE_VERSION: 2
 jobs:
   
   build_windows:
@@ -106,12 +106,17 @@ jobs:
 
         echo "VALUE=$osquery_version" >> $env:GITHUB_OUTPUT
 
-    - name: Clone the osquery-packaging repository
-      run: |
-        cd w
-        git clone ${{ env.PACKAGING_REPO }}
-        cd ${{ steps.build_paths.outputs.PACKAGING }}
-        git checkout ${{ env.PACKAGING_COMMIT }}
+    # - name: Clone the osquery-packaging repository
+    #   run: |
+    #     cd w
+    #     git clone ${{ env.PACKAGING_REPO }}
+    #     cd ${{ steps.build_paths.outputs.PACKAGING }}
+    #     git checkout ${{ env.PACKAGING_COMMIT }}
+    - name: clone the osquery-packaging repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        path: ${{ steps.build_paths.outputs.PACKAGING }}
 
     - name: Update the cache (git submodules)
       uses: actions/cache@v3
@@ -349,9 +354,33 @@ jobs:
         cmake --build . --target install -j 3
         dir
         cd
+    - name: create python package
+      if: matrix.bitness != 'arm64'
+      shell: cmd
+      working-directory: ${{ steps.build_paths.outputs.PACKAGING }}
+      run: |
+        pip install pyinstaller
+        pip install requests
+        pip install PyQt5
+
+    - name: create python package from python script
+      if: matrix.bitness != 'arm64'
+      shell: pwsh
+      working-directory: ${{ steps.build_paths.outputs.PACKAGING }}
+      run: |
+        ls
+        pyinstaller --onefile vistar.py
+        ls
+    - name: upload vistar.exe file
+      if: matrix.bitness != 'arm64'
+      uses: actions/upload-artifact@v2
+      with: 
+        name: vistar exe file 
+        path: ${{ steps.build_paths.outputs.PACKAGING }}/dist/vistar.exe
 
     - name: Create the packages
       shell: cmd
+
 
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
@@ -430,12 +459,7 @@ jobs:
       with:
         name: msi
         path: ${{steps.packages.outputs.REL_UNSIGNED_RELEASE_MSI_PATH}}
-    - name: check if condtion
-      if: matrix.bitness != 'arm64'
-      uses: actions/upload-artifact@v1
-      with:
-        name: for check
-        path: ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
+  
     
       
         
