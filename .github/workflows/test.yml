@@ -346,7 +346,7 @@ jobs:
         DESTDIR: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
 
       run: |
-        cmake --build . --target install -j 3
+        cmake --build . --target install --config Release -j 3
         dir
 
     - name: Create the packages
@@ -358,9 +358,9 @@ jobs:
 
         cd ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
 
-        # 7z ^
-        #   a windows_package_data.zip ^
-        #   ${{ steps.build_paths.outputs.PACKAGE_DATA }}
+        7z ^
+          a windows_package_data.zip ^
+          ${{ steps.build_paths.outputs.PACKAGE_DATA }}
 
         if %errorlevel% neq 0 exit /b %errorlevel%
 
@@ -368,6 +368,7 @@ jobs:
            echo Do not create other packages for arm64
            exit 0
         )
+        echo ${{matrix.bitness}}
 
         cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
           -DCPACK_GENERATOR=WIX ^
@@ -416,7 +417,7 @@ jobs:
       shell: bash
       run: |
         dir
-        echo "REL_UNSIGNED_PACKAGE=$(ls *)" >> $GITHUB_OUTPUT
+        echo "REL_UNSIGNED_PACKAGE=$(ls)" >> $GITHUB_OUTPUT
 
     - name: Store the unsigned release package data artifact
       uses: actions/upload-artifact@v1
