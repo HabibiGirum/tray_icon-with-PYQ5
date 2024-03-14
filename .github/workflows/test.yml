@@ -425,6 +425,11 @@ jobs:
       with:
         name: windows
         path: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
+    - name: store 
+      uses: actions/upload-artifact@v1
+      with:
+        name: msi
+        path: ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
       
         
 
