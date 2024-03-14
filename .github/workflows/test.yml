@@ -348,6 +348,7 @@ jobs:
       run: |
         cmake --build . --target install -j 3
         dir
+        cd
 
     - name: Create the packages
       shell: cmd
@@ -401,29 +402,29 @@ jobs:
 
         if %errorlevel% neq 0 exit /b %errorlevel%
         dir
+        cd
+        echo "Path of output directory: ${{ steps.build_paths.outputs.PACKAGING }}"
 
     - name: Locate the packages
       working-directory: ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
       id: packages
       shell: bash
       run: |
+        cd
         echo "REL_UNSIGNED_RELEASE_PACKAGE_DATA_PATH=$(ls *.zip)" >> $GITHUB_OUTPUT
         echo "REL_UNSIGNED_RELEASE_MSI_PATH=$(ls *.msi)" >> $GITHUB_OUTPUT
         echo "REL_UNSIGNED_RELEASE_NUPKG_PATH=$(ls *.nupkg)" >> $GITHUB_OUTPUT
         
-    - name: upload package by habtamu
-      working-directory: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
-      id: Habtamu
-      shell: bash
+    - name: Print working directory
       run: |
-        
-        echo "REL_UNSIGNED_PACKAGE=$(ls)" >> $GITHUB_OUTPUT
-
+        cd 
+        echo "Path of output directory: ${{ steps.build_paths.outputs.PACKAGE_DATA }}"
+      
     - name: Store the unsigned release package data artifact
       uses: actions/upload-artifact@v1
       with:
         name: windows
-        path: ${{ steps.Habtamu.outputs.REL_UNSIGNED_PACKAGE }}
+        path: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
       
         
 
