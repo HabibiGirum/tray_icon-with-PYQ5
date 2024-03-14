@@ -425,11 +425,19 @@ jobs:
       with:
         name: windows
         path: ${{ steps.build_paths.outputs.PACKAGE_DATA }}
-    - name: store 
+    - name: upload msi file
+      if: matrix.bitness != 'arm64'
       uses: actions/upload-artifact@v1
       with:
         name: msi
+        path: ${{steps.packages.outputs.REL_UNSIGNED_RELEASE_MSI_PATH}}
+    - name: check if condtion
+      if: matrix.bitness != 'arm64'
+      uses: actions/upload-artifact@v1
+      with:
+        name: for check
         path: ${{ steps.build_paths.outputs.PACKAGE_BUILD }}
+    
       
         
 
