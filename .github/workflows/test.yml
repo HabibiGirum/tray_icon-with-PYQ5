@@ -403,6 +403,7 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
           -DCPACK_GENERATOR=WIX ^
           -DOSQUERY_PACKAGE_VERSION=${{ steps.osquery_version.outputs.VALUE }} ^
+          -DVISTAR_DATA_PATH=${{ steps.build_paths.outputs.PACKAGING }} ^
           -DOSQUERY_DATA_PATH=${{ steps.build_paths.outputs.PACKAGE_DATA }} ^
           -DOSQUERY_BITNESS=${{ matrix.bitness }} ^
           ${{ steps.build_paths.outputs.PACKAGING }}
