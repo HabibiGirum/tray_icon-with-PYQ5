@@ -35,7 +35,7 @@ foreach(directory_name ${directory_name_list})
   install(
     DIRECTORY "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/${directory_name}"
     DESTINATION "."
-    COMPONENT osquery
+    COMPONENT vistar
   )
 endforeach()
 
@@ -43,18 +43,18 @@ foreach(file_name ${file_name_list})
   install(
     FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/${file_name}"
     DESTINATION "."
-    COMPONENT osquery
+    COMPONENT vistar
   )
 endforeach()
 
 install(
   FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryd/osqueryd.exe"
   DESTINATION "osqueryd"
-  COMPONENT osquery
+  COMPONENT vistar
 )
 
 install(
   FILES "${VISTAR_DATA_PATH}/dist/vistar.exe"
   DESTINATION "vistar"
-  COMPONENT osquery
+  COMPONENT vistar
 )
