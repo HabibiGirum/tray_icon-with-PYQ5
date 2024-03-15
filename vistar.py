@@ -38,7 +38,7 @@ class VistarSyncApp(QMainWindow):
         self.setStyleSheet("QMainWindow::title { background-color: black; color: white; border: 20px solid gray; font-size: 20px; }")
 
         # Set the application icon
-        self.setWindowIcon(QIcon("/Applications/Vistar.app/Contents/Resources/vistar.ico"))
+        self.setWindowIcon(QIcon("C:/Users/habta/Documents/vistar/images/vistar.ico"))
         # Create a QLabel for the image
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
@@ -46,12 +46,12 @@ class VistarSyncApp(QMainWindow):
         layout = QVBoxLayout()
 
         # Load toggle images
-        self.start_image = QPixmap("/Applications/Vistar.app/Contents/Resources/toggle_off.ico")
-        self.stop_image = QPixmap("/Applications/Vistar.app/Contents/Resources/toggle_on.ico")
+        self.start_image = QPixmap("C:/Users/habta/Documents/vistar/images/toggle_off.png")
+        self.stop_image = QPixmap("C:/Users/habta/Documents/vistar/images/toggle_on.png")
 
         # Create a QLabel for the image
         image_label = QLabel(self)
-        image_label.setPixmap(QPixmap("/Applications/Vistar.app/Contents/Resources/vistar.ico"))  # Replace with your image path
+        image_label.setPixmap(QPixmap("C:/Users/habta/Documents/vistar/images/vistar.ico"))  # Replace with your image path
         image_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(image_label)
 
@@ -152,7 +152,7 @@ class VistarSyncApp(QMainWindow):
         all_osquery_data = {}
         for query, simplified_name in self.query_data.items():
             try:
-                osquery_output = subprocess.check_output(["/Applications/Vistar.app/Contents/MacOS/osqueryi", "--json", query], universal_newlines=True)
+                osquery_output = subprocess.check_output(["C:/Program Files/osquery/osqueryi.exe", "--json", query], shell=True)
                 osquery_data = json.loads(osquery_output)
                 all_osquery_data[simplified_name] = osquery_data
             except subprocess.CalledProcessError as e:
@@ -242,7 +242,7 @@ class VistarSyncApp(QMainWindow):
     def get_mac_address(self):
         try:
             command = [
-                '/Applications/Vistar.app/Contents/MacOS/osqueryi',
+                'C:/Program Files/osquery/osqueryi.exe',
                 '--header=false',
                 '--csv',
                 'SELECT REPLACE(CONCAT(hostname, "-", uuid), "-", "_") FROM system_info;'
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     app.setQuitOnLastWindowClosed(False)
     osquery_app = VistarSyncApp()
 
-    icon = QIcon("/Applications/Vistar.app/Contents/Resources/vistar.ico")
+    icon = QIcon("C:/Users/habta/Documents/vistar/images/vistar.ico")
 
     # Adding item on the menu bar
     tray = QSystemTrayIcon(icon)
