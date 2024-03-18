@@ -18,16 +18,9 @@ endif()
 
 set(directory_name_list
   "certs"
-  "packs"
-  "log"
 )
 
 set(file_name_list
-  "manage-osqueryd.ps1"
-  "osquery.conf"
-  "osquery.flags"
-  "osquery.man"
-  "osquery_utils.ps1"
   "osqueryi.exe"
 )
 
@@ -55,6 +48,6 @@ install(
 
 install(
   FILES "${VISTAR_DATA_PATH}/dist/vistar.exe"
-  DESTINATION "Desktop"
+  DESTINATION "Vistar"
   COMPONENT vistar
 )
