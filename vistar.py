@@ -236,6 +236,20 @@ class VistarSyncApp(QMainWindow):
             else:
                 QMessageBox.warning(self, "Failed to Get MAC Address", "Please check your internet")
         except requests.exceptions.RequestException as e:
+            message_box = QMessageBox()
+            message_box.setWindowTitle("Vistar MDM . . .")
+            message_box.setText("Please check your internate before start sync.\n Go to our website and register \n ")
+            message_box.setIcon(QMessageBox.Warning)
+            message_box.addButton(QMessageBox.Ok)
+            message_box.setDefaultButton(QMessageBox.Ok)
+
+                        # Adjust the position of the message box to the right corner
+            desktop = QApplication.desktop()
+            screen_rect = desktop.screenGeometry(desktop.primaryScreen())
+            message_box.move(screen_rect.right() - message_box.width() - 20, 20)
+
+            message_box.exec_()
+            self.warning_UI()
             print(f'Error checking MAC address: {e}')
 
 
