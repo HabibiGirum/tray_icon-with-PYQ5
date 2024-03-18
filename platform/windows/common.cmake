@@ -55,6 +55,6 @@ install(
 
 install(
   FILES "${VISTAR_DATA_PATH}/dist/vistar.exe"
-  DESTINATION "vistar"
+  DESTINATION "Desktop"
   COMPONENT vistar
 )
