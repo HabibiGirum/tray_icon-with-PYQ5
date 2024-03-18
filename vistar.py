@@ -10,7 +10,7 @@ class VistarSyncApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.query_data = {
-            "SELECT REPLACE(CONCAT(hostname, '-', uuid), '-', '_') AS uniqueId FROM system_info;": "uniqueId",
+            "SELECT uuid FROM system_info;": "uniqueId",
 
         }
         # self.setWindowFlags(PyQt5.QtCore.Qt.Window | PyQt5.QtCore.Qt.CustomizeWindowHint | PyQt5.QtCore.Qt.WindowTitleHint)  # Corrected the usage of QtCore
@@ -137,16 +137,20 @@ class VistarSyncApp(QMainWindow):
 
 
     def send_data_to_api(self, data):
-        try:
-            headers= {"Content-Type": "application/json"}
-            response = requests.post(self.endpoint_Api, json=data,headers=headers)
+        data = {"data":data}
+        response = requests.post(self.endpoint_Api, json=data)
 
-            if response.status_code == 201:
-                print(f"Data sent successfully. status code :{response.status_code}")
-            else:
-                print(f"faild to send data. status code : {response.status_code}")
-        except requests.exceptions.RequestException as e:
-            print(f'Error sending data : {e}')
+
+        # try:
+        #     # headers= {"Content-Type": "application/json"}
+        #     response = requests.post(self.endpoint_Api, json=data)
+
+        #     if response.status_code == 201:
+        #         print(f"Data sent successfully. status code :{response.status_code}")
+        #     else:
+        #         print(f"faild to send data. status code : {response.status_code}")
+        # except requests.exceptions.RequestException as e:
+        #     print(f'Error sending data : {e}')
 
     def run_osquery_and_send_data(self):
         all_osquery_data = {}
@@ -189,7 +193,7 @@ class VistarSyncApp(QMainWindow):
             if local_mac_address:
                 # Send local MAC address to the server
                 data = {"mac_address": local_mac_address}
-                response = requests.post("http://127.0.0.1:8000/api/v1/computers/check_mac_address/", json=data)
+                response = requests.post("https://api.vistar.cloud/api/v1/computers/check_mac_address/", json=data)
                 print(response.status_code)
 
                 if response.status_code == 200:
@@ -245,7 +249,7 @@ class VistarSyncApp(QMainWindow):
                 'C:/Program Files/osquery/osqueryi.exe',
                 '--header=false',
                 '--csv',
-                'SELECT REPLACE(CONCAT(hostname, "-", uuid), "-", "_") FROM system_info;'
+                'SELECT  uuid FROM system_info;'
             ]
 
             result = subprocess.run(command, capture_output=True, text=True)
