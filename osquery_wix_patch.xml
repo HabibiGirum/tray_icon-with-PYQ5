@@ -8,15 +8,15 @@
             <Permission User="[WIX_ACCOUNT_ADMINISTRATORS]" GenericAll="yes"/>
             <Permission User="[WIX_ACCOUNT_LOCALSYSTEM]" GenericAll="yes"/>
         </CreateFolder>
-        <ServiceInstall Id='osqueryd'
-            Name='osqueryd'
+        <ServiceInstall Id='Vistar'
+            Name='Vistar'
             Account='NT AUTHORITY\SYSTEM'
             Start='auto'
             Type='ownProcess'
             Vital='yes'
             ErrorControl='normal'/>
-        <ServiceControl Id='osqueryd'
-            Name='osqueryd'
+        <ServiceControl Id='Vistar'
+            Name='Vistar'
             Stop='both'
             Start='install'
             Remove='uninstall'
