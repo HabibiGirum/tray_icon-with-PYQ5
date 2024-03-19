@@ -42,6 +42,7 @@ class VistarSyncApp(QMainWindow):
         # Create a QLabel for the image
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
+        
 
         layout = QVBoxLayout()
 
@@ -99,7 +100,7 @@ class VistarSyncApp(QMainWindow):
         # Adjust the position of the UI to the right corner
         desktop = QApplication.desktop()
         screen_rect = desktop.screenGeometry(desktop.primaryScreen())
-        self.move(screen_rect.right() - self.width() - 20, 20)
+        self.move(screen_rect.right()  -400, screen_rect.bottom()-200)
         # self.isMaximized()==False
         # self.move()==False
     def on_toggle(self):
@@ -205,14 +206,17 @@ class VistarSyncApp(QMainWindow):
                         message_box = QMessageBox()
                         message_box.setWindowTitle("Vistar MDM . . .")
                         message_box.setText("Hello We are Vistar Agent\nThank you for Registration!")
+                    
                         message_box.setIcon(QMessageBox.Information)
+                        message_box.setWindowIcon(QIcon("C:/Users/habta/Documents/vistar/images/vistar.ico"))
+                        message_box.setIconPixmap(QPixmap("C:/Users/habta/Documents/vistar/images/vistar.ico"))
                         message_box.addButton(QMessageBox.Ok)
                         message_box.setDefaultButton(QMessageBox.Ok)
 
                         # Adjust the position of the message box to the right corner
                         desktop = QApplication.desktop()
                         screen_rect = desktop.screenGeometry(desktop.primaryScreen())
-                        message_box.move(screen_rect.right() - message_box.width() - 20, 20)
+                        message_box.move(screen_rect.right()  -400, screen_rect.bottom()-200)
 
                         message_box.exec_()
                         self.create_UI()
