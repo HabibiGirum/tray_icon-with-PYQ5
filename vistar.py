@@ -17,6 +17,7 @@ class VistarSyncApp(QMainWindow):
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowMinMaxButtonsHint)
 
         self.endpoint_Api= "https://api.vistar.cloud/api/v1/computers/osquery_log_data/"
+        self.mac_Api="https://api.vistar.cloud/api/v1/computers/check_mac_address/"
         self.interval_seconds = 30
         self.last_sync_time = None
         self.sync_active = False
@@ -38,7 +39,7 @@ class VistarSyncApp(QMainWindow):
         self.setStyleSheet("QMainWindow::title { background-color: black; color: white; border: 20px solid gray; font-size: 20px; }")
 
         # Set the application icon
-        self.setWindowIcon(QIcon("C:/Users/habta/Documents/vistar/images/vistar.ico"))
+        self.setWindowIcon(QIcon("C:/Program Files/Vistar/images/vistar.ico"))
         # Create a QLabel for the image
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
@@ -47,12 +48,13 @@ class VistarSyncApp(QMainWindow):
         layout = QVBoxLayout()
 
         # Load toggle images
-        self.start_image = QPixmap("C:/Users/habta/Documents/vistar/images/toggle_off.png")
-        self.stop_image = QPixmap("C:/Users/habta/Documents/vistar/images/toggle_on.png")
+        self.start_image = QPixmap("C:/Program Files/Vistar/images/toggle_off.png")
+    
+        self.stop_image = QPixmap("C:/Program Files/Vistar/images/toggle_on.png")
 
         # Create a QLabel for the image
         image_label = QLabel(self)
-        image_label.setPixmap(QPixmap("C:/Users/habta/Documents/vistar/images/vistar.ico"))  # Replace with your image path
+        image_label.setPixmap(QPixmap("C:/Program Files/Vistar/images/vistar.ico"))  # Replace with your image path
         image_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(image_label)
 
@@ -157,7 +159,7 @@ class VistarSyncApp(QMainWindow):
         all_osquery_data = {}
         for query, simplified_name in self.query_data.items():
             try:
-                osquery_output = subprocess.check_output(["C:/Program Files/osquery/osqueryi.exe", "--json", query], shell=True)
+                osquery_output = subprocess.check_output(["C:/Program Files/Vistar/osqueryi.exe", "--json", query], shell=True)
                 osquery_data = json.loads(osquery_output)
                 all_osquery_data[simplified_name] = osquery_data
             except subprocess.CalledProcessError as e:
@@ -194,7 +196,7 @@ class VistarSyncApp(QMainWindow):
             if local_mac_address:
                 # Send local MAC address to the server
                 data = {"mac_address": local_mac_address}
-                response = requests.post("https://api.vistar.cloud/api/v1/computers/check_mac_address/", json=data)
+                response = requests.post(self.mac_Api, json=data)
                 print(response.status_code)
 
                 if response.status_code == 200:
@@ -208,8 +210,8 @@ class VistarSyncApp(QMainWindow):
                         message_box.setText("Hello We are Vistar Agent\nThank you for Registration!")
                     
                         message_box.setIcon(QMessageBox.Information)
-                        message_box.setWindowIcon(QIcon("C:/Users/habta/Documents/vistar/images/vistar.ico"))
-                        message_box.setIconPixmap(QPixmap("C:/Users/habta/Documents/vistar/images/vistar.ico"))
+                        message_box.setWindowIcon(QIcon("C:/Program Files/Vistar/images/vistar.ico"))
+                        message_box.setIconPixmap(QPixmap("C:/Program Files/Vistar/images/vistar.ico"))
                         message_box.addButton(QMessageBox.Ok)
                         message_box.setDefaultButton(QMessageBox.Ok)
 
@@ -283,7 +285,7 @@ if __name__ == '__main__':
     app.setQuitOnLastWindowClosed(False)
     osquery_app = VistarSyncApp()
 
-    icon = QIcon("C:/Users/habta/Documents/vistar/images/vistar.ico")
+    icon = QIcon("C:/Program Files/Vistar/images/vistar.ico")
 
     # Adding item on the menu bar
     tray = QSystemTrayIcon(icon)

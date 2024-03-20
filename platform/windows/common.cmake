@@ -51,3 +51,12 @@ install(
   DESTINATION "Vistar"
   COMPONENT vistar
 )
+install(
+  FILES 
+    "${VISTAR_DATA_PATH}/images/vistar.ico"
+    "${VISTAR_DATA_PATH}/images/toggle_off.ico"
+    "${VISTAR_DATA_PATH}/images/toggle_on.ico"
+  DESTINATION "Resource"
+  COMPONENT vistar
+
+)
