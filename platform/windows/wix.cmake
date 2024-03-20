@@ -15,7 +15,7 @@ set(CPACK_WIX_PRODUCT_ICON "${VISTAR_DATA_PATH}/images/vistar.ico")
 set(CPACK_WIX_PROGRAM_MENU_FOLDER "Vistar")
 set(CPACK_WIX_UI_DIALOG "${VISTAR_DATA_PATH}/images/Vistar.bmp")
 set(CPACK_WIX_UPGRADE_GUID "ea6c7327-461e-4033-847c-acdf2b85dede")
-set(CPACK_WIX_PATCH_FILE "${VISTAR_DATA_PATH}/osquery_wix_patch.xml")
+# set(CPACK_WIX_PATCH_FILE "${VISTAR_DATA_PATH}/osquery_wix_patch.xml")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "Vistar")
 set(CPACK_WIX_EXTENSIONS "WixUtilExtension")
 # 
