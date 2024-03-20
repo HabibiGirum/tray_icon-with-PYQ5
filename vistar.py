@@ -39,7 +39,7 @@ class VistarSyncApp(QMainWindow):
         self.setStyleSheet("QMainWindow::title { background-color: black; color: white; border: 20px solid gray; font-size: 20px; }")
 
         # Set the application icon
-        self.setWindowIcon(QIcon("C:/Program Files/Vistar/images/vistar.ico"))
+        self.setWindowIcon(QIcon("C:/Program Files/Vistar/Resource/vistar.ico"))
         # Create a QLabel for the image
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
@@ -47,14 +47,14 @@ class VistarSyncApp(QMainWindow):
 
         layout = QVBoxLayout()
 
-        # Load toggle images
-        self.start_image = QPixmap("C:/Program Files/Vistar/images/toggle_off.png")
+        # Load toggle Resource
+        self.start_image = QPixmap("C:/Program Files/Vistar/Resource/toggle_off.ico")
     
-        self.stop_image = QPixmap("C:/Program Files/Vistar/images/toggle_on.png")
+        self.stop_image = QPixmap("C:/Program Files/Vistar/Resource/toggle_on.ico")
 
         # Create a QLabel for the image
         image_label = QLabel(self)
-        image_label.setPixmap(QPixmap("C:/Program Files/Vistar/images/vistar.ico"))  # Replace with your image path
+        image_label.setPixmap(QPixmap("C:/Program Files/Vistar/Resource/vistar.ico"))  # Replace with your image path
         image_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(image_label)
 
@@ -210,8 +210,8 @@ class VistarSyncApp(QMainWindow):
                         message_box.setText("Hello We are Vistar Agent\nThank you for Registration!")
                     
                         message_box.setIcon(QMessageBox.Information)
-                        message_box.setWindowIcon(QIcon("C:/Program Files/Vistar/images/vistar.ico"))
-                        message_box.setIconPixmap(QPixmap("C:/Program Files/Vistar/images/vistar.ico"))
+                        message_box.setWindowIcon(QIcon("C:/Program Files/Vistar/Resource/vistar.ico"))
+                        message_box.setIconPixmap(QPixmap("C:/Program Files/Vistar/Resource/vistar.ico"))
                         message_box.addButton(QMessageBox.Ok)
                         message_box.setDefaultButton(QMessageBox.Ok)
 
@@ -285,7 +285,7 @@ if __name__ == '__main__':
     app.setQuitOnLastWindowClosed(False)
     osquery_app = VistarSyncApp()
 
-    icon = QIcon("C:/Program Files/Vistar/images/vistar.ico")
+    icon = QIcon("C:/Program Files/Vistar/Resource/vistar.ico")
 
     # Adding item on the menu bar
     tray = QSystemTrayIcon(icon)
