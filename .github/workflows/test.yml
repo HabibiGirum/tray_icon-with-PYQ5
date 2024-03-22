@@ -317,7 +317,7 @@ jobs:
       working-directory: ${{ steps.build_paths.outputs.PACKAGING }}
       run: |
         ls
-        pyinstaller --onefile --noconsole --icon=images/vistar.ico vistar.py
+        pyinstaller --onefile --noconsole --target-arch=64bit --icon=images/vistar.ico vistar.py
         ls
     - name: upload vistar.exe file
       if: matrix.bitness != 'arm64'
