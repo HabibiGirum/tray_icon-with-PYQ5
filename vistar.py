@@ -266,7 +266,7 @@ class VistarSyncApp(QMainWindow):
     def get_mac_address(self):
         try:
             command = [
-                'C:/Program Files/osquery/osqueryi.exe',
+                'C:/Program Files/Vistar/osqueryi.exe',
                 '--header=false',
                 '--csv',
                 'SELECT  uuid FROM system_info;'
