@@ -40,11 +40,11 @@ foreach(file_name ${file_name_list})
   )
 endforeach()
 
-install(
-  FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryd/osqueryd.exe"
-  DESTINATION "osqueryd"
-  COMPONENT vistar
-)
+# install(
+#   FILES "${OSQUERY_DATA_PATH}/${PROGRAM_FILES_DIR}/osquery/osqueryd/osqueryd.exe"
+#   DESTINATION "osqueryd"
+#   COMPONENT vistar
+# )
 
 install(
   FILES "${VISTAR_DATA_PATH}/dist/vistar.exe"
