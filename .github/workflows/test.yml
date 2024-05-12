@@ -1,5 +1,4 @@
 name: Build file
-
 on:
   push:
     branches: [ main ]
